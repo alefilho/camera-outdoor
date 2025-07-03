@@ -24,6 +24,10 @@ exec(ffmpegCmd, (error) => {
   const imageBuffer = fs.readFileSync(snapshotFile);
   const imageBase64 = imageBuffer.toString('base64');
 
+  const now = new Date();
+  const pad = (num) => String(num).padStart(2, '0');
+  const formattedDate = `${pad(now.getDate())}/${pad(now.getMonth() + 1)}/${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+
   const payload = {
     session: wahaSession,
     chatId: wahaChatId,
@@ -32,7 +36,7 @@ exec(ffmpegCmd, (error) => {
       filename: snapshotFile,
       data: imageBase64
     },
-    caption: `${new Date().toLocaleString()}`
+    caption: formattedDate
   };
 
   axios.post(wahaApiUrl, payload, {
