@@ -11,6 +11,11 @@ const wahaApiKey = process.env.WAHA_API_KEY;
 const wahaSession = process.env.WAHA_SESSION;
 const wahaChatId = process.env.WAHA_CHAT_ID;
 
+if (fs.existsSync(snapshotFile)) {
+  fs.unlinkSync(snapshotFile);
+  console.log(`Arquivo ${snapshotFile} deletado!`);
+}
+
 const ffmpegCmd = `ffmpeg -rtsp_transport tcp -i "${rtspUrl}" -frames:v 1 -q:v 2 ${snapshotFile}`;
 
 exec(ffmpegCmd, (error) => {
@@ -52,8 +57,8 @@ exec(ffmpegCmd, (error) => {
   })
   .finally((end) => {
     if (fs.existsSync(snapshotFile)) {
-        fs.unlinkSync(snapshotFile);
-        console.log(`Arquivo ${snapshotFile} deletado!`);
-      }
+      fs.unlinkSync(snapshotFile);
+      console.log(`Arquivo ${snapshotFile} deletado!`);
+    }
   });
 });
